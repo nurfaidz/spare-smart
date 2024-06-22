@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
     {
         $user = \App\Models\User::factory()->create([
             'name' => 'Superadmin',
-            'email' => 'superadmin@superadmin.com',
+            'email' => 'superadmin@gmail.com',
         ]);
 
         $role = \Spatie\Permission\Models\Role::where('name', \App\Enums\Roles\Role::Superadmin->value)->first();

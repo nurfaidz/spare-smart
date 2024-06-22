@@ -29,7 +29,11 @@ class SukuCadangResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
+                    ->sortable()
+                    ->searchable()
+                    ->rules('required', 'max:255'),
             ]);
     }
 
@@ -37,7 +41,14 @@ class SukuCadangResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('code')
+                    ->label('Kode')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //

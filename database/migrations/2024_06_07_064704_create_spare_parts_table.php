@@ -16,9 +16,8 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Brand::class)->index();
             $table->string('name');
             $table->string('code')->unique()->index();
-            $table->integer('stock');
-            $table->integer('price');
-            $table->string('image')->nullable();
+            $table->integer('stock')->nullable();
+            $table->integer('price')->nullable();
             $table->text('description')->nullable();
             $table->softDeletes();
             $table->timestamps();
