@@ -17,23 +17,41 @@ class SukuCadangResource extends Resource
 {
     protected static ?string $model = SparePart::class;
 
+    protected static ?string $label = 'Suku Cadang';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Master Data';
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationLabel = 'Suku Cadang';
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nama')
-                    ->sortable()
-                    ->searchable()
-                    ->rules('required', 'max:255'),
+                Forms\Components\Section::make('Informasi Suku Cadang')
+                ->schema([
+                    Forms\Components\Grid::make()
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Nama Suku Cadang')
+                                ->required(),
+                            Forms\Components\TextInput::make('code')
+                                ->label('Kode Suku Cadang')
+                                ->unique(ignoreRecord: true)
+                                ->required(),
+                            Forms\Components\TextInput::make('price')
+                                ->label('Harga')
+                                ->numeric()
+                                ->required(),
+                            Forms\Components\Select::make('brand_id')
+                                ->label('Merk')
+                                ->options(
+                                    fn () => \App\Models\Brand::pluck('name', 'id')
+                                )
+                                ->required(),
+                        ]),
+                    ]),
             ]);
     }
 
@@ -57,9 +75,7 @@ class SukuCadangResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //
             ]);
     }
 

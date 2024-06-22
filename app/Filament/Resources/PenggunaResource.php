@@ -23,13 +23,29 @@ class PenggunaResource extends Resource
 
     protected static ?int $navigationSort = 5;
 
-    protected static ?string $navigationLabel = 'Pengguna';
+    protected static ?string $label = 'Pengguna';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Section::make('Informasi Umum')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Username')
+                            ->formatStateUsing(fn ($record) => $record->name ?? '')
+                            ->required(),
+                        Forms\Components\TextInput::make('email')
+                            ->label('Email')
+                            ->unique(ignoreRecord: true)
+                            ->email()
+                            ->required(),
+                        Forms\Components\TextInput::make('password')
+                            ->label('Password')
+                            ->password()
+                            ->visible(fn ($livewire) => $livewire instanceof Pages\CreatePengguna)
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -37,7 +53,15 @@ class PenggunaResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Pengguna')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('role')
+                    ->label('Role')
+                    ->searchable(),
             ])
             ->filters([
                 //
@@ -46,9 +70,7 @@ class PenggunaResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //
             ]);
     }
 

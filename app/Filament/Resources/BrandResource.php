@@ -29,7 +29,12 @@ class BrandResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Section::make('Informasi Brand')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nama Brand')
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -37,7 +42,9 @@ class BrandResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Brand')
+                    ->searchable(),
             ])
             ->filters([
                 //
@@ -46,9 +53,7 @@ class BrandResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //
             ]);
     }
 

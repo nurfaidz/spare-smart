@@ -23,7 +23,7 @@ class BarangMasukResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationLabel = 'Barang Masuk';
+    protected static ?string $label = 'Barang Masuk';
 
     public static function form(Form $form): Form
     {
