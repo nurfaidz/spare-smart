@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PenggunaResource extends Resource
@@ -88,5 +89,15 @@ class PenggunaResource extends Resource
             'create' => Pages\CreatePengguna::route('/create'),
             'edit' => Pages\EditPengguna::route('/{record}/edit'),
         ];
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return $record->id != 1;
+    }
+
+    public static function canAccess(): bool
+    {
+        return auth()->id() == 1;
     }
 }

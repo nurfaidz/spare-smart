@@ -16,7 +16,7 @@ class Login extends BaseLogin
         return [
             'email' => $data['email'],
             'password' => $data['password'],
-            fn (Builder $query) => $query->whereRelation('roles', 'name', [Role::Superadmin->value, Role::Admin->value]),
+            fn (Builder $query) => $query->whereRelation('roles', 'name', Role::Superadmin->value)->orWhereRelation('roles', 'name', Role::Admin->value),
         ];
     }
 }
