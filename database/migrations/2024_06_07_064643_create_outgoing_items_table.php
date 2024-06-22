@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('outgoing_items', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique()->index();
+            $table->integer('quantity');
+            $table->integer('actual_price');
+            $table->bigInteger('total_price');
+            $table->dateTime('outgoing_at');
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

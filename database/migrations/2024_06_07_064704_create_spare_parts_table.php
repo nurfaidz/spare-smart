@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code')->unique()->index();
             $table->integer('stock')->nullable();
-            $table->integer('price')->nullable();
+            // $table->integer('price')->nullable();
             $table->text('description')->nullable();
             $table->softDeletes();
             $table->timestamps();
