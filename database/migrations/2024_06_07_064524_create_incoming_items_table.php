@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('total_price');
             $table->dateTime('incoming_at');
             $table->text('note')->nullable();
+            $table->foreignIdFor(\App\Models\Brand::class)->index();
             $table->timestamps();
         });
     }

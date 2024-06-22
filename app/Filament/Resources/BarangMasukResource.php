@@ -33,16 +33,9 @@ class BarangMasukResource extends Resource
                 ->schema([
                     Forms\Components\Grid::make()
                         ->schema([
-                            Forms\Components\TextInput::make('name')
-                                ->label('Nama Suku Cadang')
-                                ->required(),
                             Forms\Components\TextInput::make('code')
                                 ->label('Kode Suku Cadang')
                                 ->unique(ignoreRecord: true)
-                                ->required(),
-                            Forms\Components\TextInput::make('price')
-                                ->label('Harga')
-                                ->numeric()
                                 ->required(),
                             Forms\Components\Select::make('brand_id')
                                 ->label('Merk')
@@ -50,6 +43,19 @@ class BarangMasukResource extends Resource
                                     fn () => \App\Models\Brand::pluck('name', 'id')
                                 )
                                 ->required(),
+                            Forms\Components\TextInput::make('actual_price')
+                                ->label('Harga')
+                                ->numeric()
+                                ->required(),
+                            Forms\Components\TextInput::make('quantity')
+                                ->label('Jumlah')
+                                ->numeric()
+                                ->required(),
+                            Forms\Components\DateTimePicker::make('incoming_at')
+                                ->label('Tanggal Masuk')
+                                ->required(),
+                            Forms\Components\Textarea::make('note')
+                                ->label('Catatan'),
                         ]),
                     ]),
             ]);

@@ -33,17 +33,17 @@ class SukuCadangResource extends Resource
                 ->schema([
                     Forms\Components\Grid::make()
                         ->schema([
-                            Forms\Components\TextInput::make('name')
-                                ->label('Nama Suku Cadang')
-                                ->required(),
                             Forms\Components\TextInput::make('code')
                                 ->label('Kode Suku Cadang')
                                 ->unique(ignoreRecord: true)
                                 ->required(),
-                            Forms\Components\TextInput::make('price')
-                                ->label('Harga')
-                                ->numeric()
+                            Forms\Components\TextInput::make('name')
+                                ->label('Nama Suku Cadang')
                                 ->required(),
+                            // Forms\Components\TextInput::make('price')
+                            //     ->label('Harga')
+                            //     ->numeric()
+                            //     ->required(),
                             Forms\Components\Select::make('brand_id')
                                 ->label('Merk')
                                 ->options(

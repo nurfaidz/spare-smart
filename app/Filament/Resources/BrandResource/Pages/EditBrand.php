@@ -16,4 +16,11 @@ class EditBrand extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeUpdate(array $data): array
+    {
+        $data['name'] = strtoupper($data['name']);
+
+        return $data;
+    }
 }
