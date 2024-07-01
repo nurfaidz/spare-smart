@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\BarangMasukResource\Pages;
 
 use App\Filament\Resources\BarangMasukResource;
+use App\Models\Report;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
@@ -29,6 +30,16 @@ class CreateBarangMasuk extends CreateRecord
 
             $record->total_price = $record->quantity * $sparePart->current_price;
             $record->save();
+
+            $report = Report::create([
+                'reportable_id' => $record->id,
+                'reportable_type' => get_class($record),
+            ]);
+
+            activity()
+                ->performedOn($report)
+                ->causedBy(auth()->user())
+                ->log('Membuat laporan barang masuk');
 
             activity()
                 ->performedOn($sparePart)
