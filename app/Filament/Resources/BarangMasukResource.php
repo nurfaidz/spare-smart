@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BarangMasukResource\Pages;
 use App\Filament\Resources\BarangMasukResource\RelationManagers;
 use App\Models\IncomingItem;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -37,11 +38,6 @@ class BarangMasukResource extends Resource
                             Forms\Components\Select::make('spare_part_id')
                                 ->label('Suku Cadang')
                                 ->options(function (?Model $record) {
-                                    // $member = User::whereDoesntHave('shop')->member();
-                                    // if (isset($record)) {
-                                    //     $member->orWhere('id', $record->member_id);
-                                    // }
-                                    // return $member->pluck('name', 'id');
 
                                     return \App\Models\SparePart::pluck('name', 'id');
                                 })
@@ -54,6 +50,8 @@ class BarangMasukResource extends Resource
                                 ->required(),
                             Forms\Components\DatePicker::make('incoming_at')
                                 ->label('Tanggal Masuk')
+                                ->native(false)
+                                ->maxDate(now())
                                 ->required(),
                             Forms\Components\Textarea::make('note')
                                 ->label('Catatan'),
@@ -69,29 +67,30 @@ class BarangMasukResource extends Resource
                 Tables\Columns\TextColumn::make('sparePart.name')
                     ->label('Suku Cadang')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('actual_price')
+                Tables\Columns\TextColumn::make('sparePart.current_price')
                     ->label('Harga Satuan')
+                    ->formatStateUsing(fn ($record) => $record->sparePart->current_price ? 'Rp ' . number_format($record->sparePart->current_price, 0, ',', '.') : '-')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('quantity')
                     ->label('Jumlah')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('total_price')
                     ->label('Total Harga')
+                    ->formatStateUsing(fn ($record) => $record->total_price ? 'Rp ' . number_format($record->total_price, 0, ',', '.') : '-')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('incoming_at')
                     ->label('Tanggal Masuk')
+                    ->formatStateUsing(fn ($record) => Carbon::parse($record->incoming_at)->locale('id_ID')->isoFormat('LL'))
                     ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //
             ]);
     }
 
@@ -107,7 +106,7 @@ class BarangMasukResource extends Resource
         return [
             'index' => Pages\ListBarangMasuks::route('/'),
             'create' => Pages\CreateBarangMasuk::route('/create'),
-            'edit' => Pages\EditBarangMasuk::route('/{record}/edit'),
+            'view' => Pages\ViewBarangMasuk::route('/{record}/view'),
         ];
     }
 }

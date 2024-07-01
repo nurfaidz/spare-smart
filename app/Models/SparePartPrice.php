@@ -13,6 +13,6 @@ class SparePartPrice extends Model
 
     public function sparePart()
     {
-        return $this->belongsTo(SparePart::class);
+        return $this->belongsTo(SparePart::class)->withTrashed();
     }
 }

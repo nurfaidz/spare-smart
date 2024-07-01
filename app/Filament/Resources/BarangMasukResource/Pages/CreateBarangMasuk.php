@@ -27,8 +27,7 @@ class CreateBarangMasuk extends CreateRecord
             $sparePart->stock += $data['quantity'];
             $sparePart->save();
 
-            $record->total_price = $record->quantity * $sparePart->price;
-            dd($record->total_price, $record->quantity, $sparePart->price);
+            $record->total_price = $record->quantity * $sparePart->current_price;
             $record->save();
 
             activity()
