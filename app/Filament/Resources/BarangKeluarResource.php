@@ -78,7 +78,7 @@ class BarangKeluarResource extends Resource
                     ->label('Total Harga')
                     ->formatStateUsing(fn ($record) => $record->total_price ? 'Rp ' . number_format($record->total_price, 0, ',', '.') : '-')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('incoming_at')
+                Tables\Columns\TextColumn::make('outgoing_at')
                     ->label('Tanggal Keluar')
                     ->formatStateUsing(fn ($record) => Carbon::parse($record->outgoing_at)->locale('id_ID')->isoFormat('LL'))
                     ->searchable(),
@@ -97,7 +97,7 @@ class BarangKeluarResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\LogRelationManager::class,
         ];
     }
 

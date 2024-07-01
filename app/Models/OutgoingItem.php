@@ -17,8 +17,13 @@ class OutgoingItem extends Model
         return $this->morphOne(Report::class, 'reportable');
     }
 
-    public function logs()
+    public function log()
     {
-        return $this->hasMany(Activity::class, 'subject_id');
+        return $this->morphOne(Activity::class, 'subject');
+    }
+
+    public function sparePart()
+    {
+        return $this->belongsTo(SparePart::class)->withTrashed();
     }
 }
