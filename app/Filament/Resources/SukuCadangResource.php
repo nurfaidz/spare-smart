@@ -40,16 +40,18 @@ class SukuCadangResource extends Resource
                             Forms\Components\TextInput::make('name')
                                 ->label('Nama Suku Cadang')
                                 ->required(),
-                            // Forms\Components\TextInput::make('price')
-                            //     ->label('Harga')
-                            //     ->numeric()
-                            //     ->required(),
                             Forms\Components\Select::make('brand_id')
                                 ->label('Merk')
                                 ->options(
                                     fn () => \App\Models\Brand::pluck('name', 'id')
                                 )
                                 ->required(),
+                            Forms\Components\TextInput::make('current_price')
+                                ->label('Harga')
+                                ->numeric()
+                                ->required(),
+                            Forms\Components\TextArea::make('description')
+                                ->label('Deskripsi'),
                         ]),
                     ]),
             ]);
@@ -61,11 +63,20 @@ class SukuCadangResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama')
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('code')
                     ->label('Kode')
-                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('brand.name')
+                    ->label('Brand/Merk')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('current_price')
+                    ->label('Harga')
+                    ->formatStateUsing(fn ($record) => $record->current_price ? 'Rp ' . number_format($record->current_price, 0, ',', '.') : '-')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('stock')
+                    ->label('Stok')
+                    ->formatStateUsing(fn ($record) => $record->stock ?? '-')
                     ->searchable(),
             ])
             ->filters([
@@ -73,6 +84,7 @@ class SukuCadangResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 //
@@ -82,7 +94,8 @@ class SukuCadangResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\LogsRelationManager::class,
+            RelationManagers\PricesRelationManager::class,
         ];
     }
 
@@ -92,6 +105,7 @@ class SukuCadangResource extends Resource
             'index' => Pages\ListSukuCadangs::route('/'),
             'create' => Pages\CreateSukuCadang::route('/create'),
             'edit' => Pages\EditSukuCadang::route('/{record}/edit'),
+            'view' => Pages\ViewSukuCadang::route('/{record}/view'),
         ];
     }
 }

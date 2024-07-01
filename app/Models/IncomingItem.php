@@ -21,4 +21,9 @@ class IncomingItem extends Model
     {
         return $this->hasMany(Activity::class, 'subject_id');
     }
+
+    public function sparePart()
+    {
+        return $this->belongsTo(SparePart::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Models\Activity;
 
 class SparePart extends Model
 {
@@ -15,5 +16,15 @@ class SparePart extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(Activity::class,'subject_id');
+    }
+
+    public function prices()
+    {
+        return $this->hasMany(SparePartPrice::class);
     }
 }

@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('incoming_items', function (Blueprint $table) {
+        Schema::create('spare_part_prices', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\SparePart::class)->index();
-            $table->integer('quantity');
-            $table->bigInteger('total_price');
-            $table->dateTime('incoming_at');
-            $table->text('note')->nullable();
+            $table->bigInteger('price');
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('incoming_items');
+        Schema::dropIfExists('spare_part_prices');
     }
 };

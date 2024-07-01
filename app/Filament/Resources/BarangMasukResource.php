@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BarangMasukResource extends Resource
@@ -33,25 +34,25 @@ class BarangMasukResource extends Resource
                 ->schema([
                     Forms\Components\Grid::make()
                         ->schema([
-                            Forms\Components\TextInput::make('code')
-                                ->label('Kode Suku Cadang')
-                                ->unique(ignoreRecord: true)
-                                ->required(),
-                            Forms\Components\Select::make('brand_id')
-                                ->label('Merk')
-                                ->options(
-                                    fn () => \App\Models\Brand::pluck('name', 'id')
-                                )
-                                ->required(),
-                            Forms\Components\TextInput::make('actual_price')
-                                ->label('Harga')
-                                ->numeric()
-                                ->required(),
+                            Forms\Components\Select::make('spare_part_id')
+                                ->label('Suku Cadang')
+                                ->options(function (?Model $record) {
+                                    // $member = User::whereDoesntHave('shop')->member();
+                                    // if (isset($record)) {
+                                    //     $member->orWhere('id', $record->member_id);
+                                    // }
+                                    // return $member->pluck('name', 'id');
+
+                                    return \App\Models\SparePart::pluck('name', 'id');
+                                })
+                                ->required()
+                                ->searchable()
+                                ->preload(),
                             Forms\Components\TextInput::make('quantity')
                                 ->label('Jumlah')
                                 ->numeric()
                                 ->required(),
-                            Forms\Components\DateTimePicker::make('incoming_at')
+                            Forms\Components\DatePicker::make('incoming_at')
                                 ->label('Tanggal Masuk')
                                 ->required(),
                             Forms\Components\Textarea::make('note')
@@ -65,7 +66,21 @@ class BarangMasukResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('sparePart.name')
+                    ->label('Suku Cadang')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('actual_price')
+                    ->label('Harga Satuan')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('quantity')
+                    ->label('Jumlah')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('total_price')
+                    ->label('Total Harga')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('incoming_at')
+                    ->label('Tanggal Masuk')
+                    ->searchable(),
             ])
             ->filters([
                 //

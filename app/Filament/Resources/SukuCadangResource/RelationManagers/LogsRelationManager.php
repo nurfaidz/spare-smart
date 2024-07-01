@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\BrandResource\RelationManagers;
+namespace App\Filament\Resources\SukuCadangResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,7 +21,9 @@ class LogsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('title')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -48,6 +50,7 @@ class LogsRelationManager extends RelationManager
             ])
             ->bulkActions([
                 //
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 }
