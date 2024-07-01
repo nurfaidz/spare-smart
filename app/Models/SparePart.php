@@ -20,7 +20,7 @@ class SparePart extends Model
 
     public function logs()
     {
-        return $this->hasMany(Activity::class,'subject_id');
+        return $this->morphMany(Activity::class, 'subject');
     }
 
     public function prices()

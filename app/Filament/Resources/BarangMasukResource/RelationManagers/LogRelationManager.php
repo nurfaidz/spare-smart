@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\SukuCadangResource\RelationManagers;
+namespace App\Filament\Resources\BarangMasukResource\RelationManagers;
 
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -9,11 +10,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Carbon;
 
-class LogsRelationManager extends RelationManager
+class LogRelationManager extends RelationManager
 {
-    protected static string $relationship = 'logs';
+    protected static string $relationship = 'log';
 
     protected static ?string $title = 'Aktivitas';
 
@@ -44,14 +44,16 @@ class LogsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                //
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                //
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                //
-            ])
-            ->defaultSort('created_at', 'desc');
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 }

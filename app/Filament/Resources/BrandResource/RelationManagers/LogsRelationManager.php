@@ -30,7 +30,8 @@ class LogsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('title')
             ->columns([
-                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('description')
+                    ->label('Deskripsi'),
                 Tables\Columns\TextColumn::make('causer.name')
                     ->label('User'),
                 Tables\Columns\TextColumn::make('created_at')

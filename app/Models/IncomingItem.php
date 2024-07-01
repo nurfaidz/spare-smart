@@ -17,9 +17,9 @@ class IncomingItem extends Model
         return $this->morphOne(Report::class, 'reportable');
     }
 
-    public function logs()
+    public function log()
     {
-        return $this->hasMany(Activity::class, 'subject_id');
+        return $this->morphOne(Activity::class, 'subject');
     }
 
     public function sparePart()
