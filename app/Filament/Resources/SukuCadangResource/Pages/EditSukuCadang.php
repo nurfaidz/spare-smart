@@ -23,7 +23,7 @@ class EditSukuCadang extends EditRecord
     {
         SparePartPrice::create([
             'spare_part_id' => $record->id,
-            'price' => $data['current_price'],
+            'price' => $record->current_price,
         ]);
 
         $record->update($data);
@@ -39,5 +39,12 @@ class EditSukuCadang extends EditRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('view', ['record' => $this->record]);
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            SukuCadangResource\Widgets\WidgetStatHargaSukuCadang::class,
+        ];
     }
 }

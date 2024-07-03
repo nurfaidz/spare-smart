@@ -15,6 +15,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "maatwebsite/excel": "^3.1",
+        "malzariey/filament-daterangepicker-filter": "^2.8",
         "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-medialibrary": "^10.15",
         "spatie/laravel-model-states": "^2.7",

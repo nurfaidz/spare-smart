@@ -44,4 +44,11 @@ class ViewSukuCadang extends ViewRecord
                     ]),
             ]);
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            SukuCadangResource\Widgets\WidgetStatHargaSukuCadang::class,
+        ];
+    }
 }

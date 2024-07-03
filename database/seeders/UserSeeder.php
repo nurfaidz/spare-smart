@@ -12,12 +12,20 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = \App\Models\User::factory()->create([
+        $superadmin = \App\Models\User::factory()->create([
             'name' => 'Superadmin',
             'email' => 'superadmin@gmail.com',
         ]);
 
-        $role = \Spatie\Permission\Models\Role::where('name', \App\Enums\Roles\Role::Superadmin->value)->first();
-        $user->assignRole($role);
+        $admin = \App\Models\User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+        ]);
+
+        $roleSuperadmin = \Spatie\Permission\Models\Role::where('name', \App\Enums\Roles\Role::Superadmin->value)->first();
+        $superadmin->assignRole($roleSuperadmin);
+
+        $roleAdmin = \Spatie\Permission\Models\Role::where('name', \App\Enums\Roles\Role::Admin->value)->first();
+        $admin->assignRole($roleAdmin);
     }
 }

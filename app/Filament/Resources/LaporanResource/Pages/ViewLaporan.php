@@ -54,8 +54,14 @@ class ViewLaporan extends ViewRecord
                                         }
                                     }),
                                 Infolists\Components\TextEntry::make('created_at')
-                                    ->label('Tanggal Laporan')
-                                    ->formatStateUsing(fn ($record) => Carbon::parse($record->created_at)->locale('id_ID')->isoFormat('LL')),
+                                    ->label('Tanggal')
+                                    ->formatStateUsing(function ($record) {
+                                        if ($record->reportable_type === \App\Models\IncomingItem::class) {
+                                            return Carbon::parse($record->reportable->incoming_at)->locale('id_ID')->isoFormat('LL');
+                                        } elseif ($record->reportable_type === \App\Models\OutgoingItem::class) {
+                                            return Carbon::parse($record->reportable->outgoing_at)->locale('id_ID')->isoFormat('LL');
+                                        }
+                                    }),
                             ]),
                     ]),
             ]);
