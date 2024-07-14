@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Login;
+use App\Filament\Widgets\ChartBarang;
 use App\Http\Middleware\ValidateLogin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -29,6 +30,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('')
             // ->authGuard('filament')
+            ->brandName('Ucok Gear')
+            ->brandLogo(asset('img/bengkel-ucok.png'))
+            ->brandLogoHeight('6rem')
             ->login(Login::class)
             ->colors([
                 'primary' => Color::Amber,
@@ -41,6 +45,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
+                ChartBarang::class,
                 // Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
