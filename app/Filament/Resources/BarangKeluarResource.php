@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BarangKeluarResource\Pages;
 use App\Filament\Resources\BarangKeluarResource\RelationManagers;
 use App\Models\OutgoingItem;
+use App\States\Status\Activated;
+use App\States\Status\Cancelled;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -82,6 +84,13 @@ class BarangKeluarResource extends Resource
                     ->label('Tanggal Keluar')
                     ->formatStateUsing(fn ($record) => Carbon::parse($record->outgoing_at)->locale('id_ID')->isoFormat('LL'))
                     ->searchable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        Activated::$name => 'success',
+                        Cancelled::$name => 'danger',
+                    })
             ])
             ->filters([
                 //
@@ -108,5 +117,10 @@ class BarangKeluarResource extends Resource
             'create' => Pages\CreateBarangKeluar::route('/create'),
             'view' => Pages\ViewBarangKeluar::route('/{record}/view'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->withTrashed();
     }
 }

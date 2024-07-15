@@ -36,6 +36,16 @@ class ViewBarangMasuk extends ViewRecord
 
                     $record->delete();
 
+                    activity()
+                    ->performedOn($record)
+                    ->causedBy(auth()->user())
+                    ->log('Membatalkan barang masuk');
+
+                    activity()
+                    ->performedOn($record->sparePart)
+                    ->causedBy(auth()->user())
+                    ->log('Mengupdate stok suku cadang dari barang masuk');
+
                     Notification::make()
                         ->success()
                         ->title('Barang Masuk telah dibatalkan!')

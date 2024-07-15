@@ -27,6 +27,7 @@ class CreateBarangKeluar extends CreateRecord
             $sparePart->save();
 
             $record->total_price = $record->quantity * $sparePart->current_price;
+            $record->status = \App\States\Status\Activated::class;
             $record->save();
 
             $report = Report::create([

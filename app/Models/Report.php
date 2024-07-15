@@ -14,7 +14,7 @@ class Report extends Model
 
     public function reportable()
     {
-        return $this->morphTo();
+        return $this->morphTo()->withTrashed();
     }
 
     public function log()

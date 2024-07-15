@@ -45,10 +45,12 @@ class ListLaporans extends ListRecords
                     if ($data['reportable_type'] === \App\Models\IncomingItem::class) {
                         $tableFilters = \App\Models\IncomingItem::where('incoming_at', '>=', Carbon::parse($date[0]))
                             ->where('incoming_at', '<=', Carbon::parse($date[1]))
+                            ->whereState('status', \App\States\Status\Activated::class)
                             ->get();
                     } elseif ($data['reportable_type'] === \App\Models\OutgoingItem::class) {
                         $tableFilters = \App\Models\OutgoingItem::where('outgoing_at', '>=', Carbon::parse($date[0]))
                             ->where('outgoing_at', '<=', Carbon::parse($date[1]))
+                            ->whereState('status', \App\States\Status\Activated::class)
                             ->get();
                     }
 

@@ -82,6 +82,13 @@ class LaporanResource extends Resource
                             return Carbon::parse($record->reportable->outgoing_at)->locale('id_ID')->isoFormat('LL');
                         }
                     }),
+                Tables\Columns\TextColumn::make('reportable.status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        \App\States\Status\Activated::$name => 'success',
+                        \App\States\Status\Cancelled::$name => 'danger',
+                    }),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')
