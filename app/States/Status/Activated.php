@@ -2,9 +2,9 @@
 
 namespace App\States\Status;
 
-class Actived extends StatusState
+class Activated extends StatusState
 {
-    public static string $name = 'Actived';
+    public static string $name = 'Aktif';
 
     public function label(): string
     {

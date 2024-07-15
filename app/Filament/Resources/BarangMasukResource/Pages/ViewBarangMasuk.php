@@ -27,7 +27,8 @@ class ViewBarangMasuk extends ViewRecord
                         ->required(),
                 ])
                 ->action(function (array $data, IncomingItem $record): void {
-                    $record->note = $data['note'];
+                    $record->note_cancellation = $data['note'];
+                    $record->status = \App\States\Status\Cancelled::class;
                     $record->save();
 
                     $record->sparePart->stock -= $record->quantity;
@@ -42,7 +43,8 @@ class ViewBarangMasuk extends ViewRecord
 
                     redirect()->route('filament.admin.resources.barang-masuks.index');
 
-                }),
+                })
+                ->hidden(fn (IncomingItem $record) => $record->status->equals(\App\States\Status\Cancelled::class)),
         ];
     }
 
@@ -65,6 +67,16 @@ class ViewBarangMasuk extends ViewRecord
                                     }),
                                 Infolists\Components\TextEntry::make('note')
                                     ->label('Catatan'),
+                                Infolists\Components\TextEntry::make('status')
+                                    ->label('Status')
+                                    ->badge()
+                                    ->color(fn (string $state): string => match ($state) {
+                                        \App\States\Status\Activated::$name => 'success',
+                                        \App\States\Status\Cancelled::$name => 'danger',
+                                    }),
+                                Infolists\Components\TextEntry::make('note_cancellation')
+                                    ->label('Alasan Pembatalan')
+                                    ->hidden(fn (IncomingItem $record) => !$record->status->equals(\App\States\Status\Cancelled::class)),
                             ]),
                         ]),
             ]);

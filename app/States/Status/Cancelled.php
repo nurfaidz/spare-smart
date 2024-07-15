@@ -4,7 +4,7 @@ namespace App\States\Status;
 
 class Cancelled extends StatusState
 {
-    public static string $name = 'Cancelled';
+    public static string $name = 'Dibatalkan';
 
     public function label(): string
     {

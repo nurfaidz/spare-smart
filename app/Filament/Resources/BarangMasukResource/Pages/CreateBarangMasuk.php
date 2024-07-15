@@ -4,6 +4,7 @@ namespace App\Filament\Resources\BarangMasukResource\Pages;
 
 use App\Filament\Resources\BarangMasukResource;
 use App\Models\Report;
+use App\States\Status\Activated;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
@@ -29,6 +30,7 @@ class CreateBarangMasuk extends CreateRecord
             $sparePart->save();
 
             $record->total_price = $record->quantity * $sparePart->current_price;
+            $record->status = Activated::class;
             $record->save();
 
             $report = Report::create([

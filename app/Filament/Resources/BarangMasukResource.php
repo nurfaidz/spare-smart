@@ -6,6 +6,8 @@ use App\Filament\Resources\BarangMasukResource\Pages;
 use App\Filament\Resources\BarangMasukResource\RelationManagers;
 use App\Models\IncomingItem;
 use Carbon\Carbon;
+use App\States\Status\Activated;
+use App\States\Status\Cancelled;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -82,14 +84,12 @@ class BarangMasukResource extends Resource
                     ->label('Tanggal Masuk')
                     ->formatStateUsing(fn ($record) => Carbon::parse($record->incoming_at)->locale('id_ID')->isoFormat('LL'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('deleted_at')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->badge(function ($record) {
-                        if ($record->deleted_at) {
-                            return 'Dibatalkan';
-                        } else {
-                            return 'Aktif';
-                        }
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        Activated::$name => 'success',
+                        Cancelled::$name => 'danger',
                     })
             ])
             ->filters([
