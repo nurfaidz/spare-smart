@@ -82,6 +82,15 @@ class BarangMasukResource extends Resource
                     ->label('Tanggal Masuk')
                     ->formatStateUsing(fn ($record) => Carbon::parse($record->incoming_at)->locale('id_ID')->isoFormat('LL'))
                     ->searchable(),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->label('Status')
+                    ->badge(function ($record) {
+                        if ($record->deleted_at) {
+                            return 'Dibatalkan';
+                        } else {
+                            return 'Aktif';
+                        }
+                    })
             ])
             ->filters([
                 //
@@ -108,5 +117,10 @@ class BarangMasukResource extends Resource
             'create' => Pages\CreateBarangMasuk::route('/create'),
             'view' => Pages\ViewBarangMasuk::route('/{record}/view'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->withTrashed();
     }
 }

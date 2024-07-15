@@ -18,6 +18,9 @@ return new class extends Migration
             $table->bigInteger('total_price');
             $table->dateTime('outgoing_at');
             $table->text('note')->nullable();
+            $table->string('status');
+            $table->text('note_cancellation')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
