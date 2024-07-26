@@ -33,3 +33,9 @@ Route::prefix('incoming-item')->name('incoming-item.')->group(function () {
     Route::post('store', [Api\IncomingController::class, 'store'])->name('store');
     Route::get('show/{id}', [Api\IncomingController::class, 'show'])->name('show');
 });
+
+Route::prefix('outgoing-item')->name('outgoing-items.')->group(function () {
+    Route::get('/', [Api\OutgoingController::class, 'index'])->name('index');
+    Route::post('store', [Api\OutgoingController::class, 'store'])->name('store');
+    Route::get('show/{id}', [Api\OutgoingController::class, 'show'])->name('show');
+});

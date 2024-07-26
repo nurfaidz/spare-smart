@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OutgoingItemJsonResource;
 use App\Models\OutgoingItem;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,11 @@ class OutgoingController extends Controller
      */
     public function index()
     {
-        //
+        $outgoingItems = OutgoingItem::orderBy('created_at', 'desc')
+                            ->withTrashed()
+                            ->get();
+
+        return OutgoingItemJsonResource::collection($outgoingItems);
     }
 
     /**
