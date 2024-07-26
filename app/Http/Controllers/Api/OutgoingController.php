@@ -42,7 +42,7 @@ class OutgoingController extends Controller
      */
     public function show(OutgoingItem $outgoingItem)
     {
-        //
+        return new OutgoingItemJsonResource($outgoingItem);
     }
 
     /**

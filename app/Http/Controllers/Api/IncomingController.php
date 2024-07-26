@@ -43,7 +43,7 @@ class IncomingController extends Controller
      */
     public function show(IncomingItem $incomingItem)
     {
-        //
+        return new IncomingItemJsonResource($incomingItem);
     }
 
     /**
