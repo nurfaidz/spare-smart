@@ -34,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Ucok Gear')
             ->brandLogo(asset('img/bengkel-ucok.png'))
             ->brandLogoHeight('6rem')
-            ->login(Login::class)
+            ->login()
             ->colors([
                 'primary' => Color::Amber,
             ])

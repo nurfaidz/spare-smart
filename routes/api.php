@@ -31,6 +31,7 @@ Route::middleware('[]')->name('api.')->group(function () {
 Route::prefix('incoming-item')->name('incoming-item.')->group(function () {
     Route::get('/', [Api\IncomingController::class, 'index'])->name('index');
     Route::post('store', [Api\IncomingController::class, 'store'])->name('store');
+    Route::get('create', [Api\IncomingController::class, 'create'])->name('create');
     Route::get('show/{incoming_item}', [Api\IncomingController::class, 'show'])->name('show');
 });
 
