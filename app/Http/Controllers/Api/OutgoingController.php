@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OutgoingItemRequest;
 use App\Http\Resources\OutgoingItemJsonResource;
+use App\Http\Resources\SparePartJsonResource;
 use App\Models\OutgoingItem;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -28,7 +29,9 @@ class OutgoingController extends Controller
      */
     public function create()
     {
-        //
+        $spareParts = \App\Models\SparePart::withTrashed()->get();
+
+        return response()->apiSuccess(SparePartJsonResource::collection($spareParts));
     }
 
     /**

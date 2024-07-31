@@ -38,5 +38,6 @@ Route::prefix('incoming-item')->name('incoming-item.')->group(function () {
 Route::prefix('outgoing-item')->name('outgoing-items.')->group(function () {
     Route::get('/', [Api\OutgoingController::class, 'index'])->name('index');
     Route::post('store', [Api\OutgoingController::class, 'store'])->name('store');
+    Route::get('create', [Api\OutgoingController::class, 'create'])->name('create');
     Route::get('show/{outgoing_item}', [Api\OutgoingController::class, 'show'])->name('show');
 });

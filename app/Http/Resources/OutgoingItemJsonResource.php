@@ -22,7 +22,7 @@ class OutgoingItemJsonResource extends JsonResource
             'stock_current' => $this->sparePart->stock,
             'quantity' => $this->quantity,
             'total_price' => $this->total_price,
-            'incoming_at' => Carbon::parse($this->outgoing)->format('d-m-Y'),
+            'outgoing_at' => Carbon::parse($this->outgoing)->format('d-m-Y'),
             'note' => $this->note,
             'status' => $this->status,
             'note_cancellation' => $this->note_cancellation,

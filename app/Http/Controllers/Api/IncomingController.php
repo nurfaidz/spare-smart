@@ -42,7 +42,6 @@ class IncomingController extends Controller
     public function store(IncomingItemRequest $request)
     {
         try {
-            // dd($request->all());
             $sparePart = \App\Models\SparePart::find($request->spare_part_id);
             $sparePart->stock += $request->quantity;
             $sparePart->save();
