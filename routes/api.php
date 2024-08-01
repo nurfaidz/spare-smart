@@ -20,11 +20,11 @@ Route::middleware('[]')->name('api.')->group(function () {
         // Register
         // Route::post('register', Auth\RegisterApiController::class);
 
-        // // Login
-        // Route::post('login', Auth\LoginApiController::class);
+        // Login
+        Route::post('login', Api\Auth\LoginController::class);
 
-        // // Logout
-        // Route::post('logout', Auth\LogoutApiController::class);
+        // Logout
+        Route::post('logout', Api\Auth\LogoutController::class);
     });
 });
 
