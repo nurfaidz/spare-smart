@@ -15,7 +15,16 @@ class ViewSukuCadang extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->action(function () {
+                    if ($this->record->prices->count() > 0) {
+                        $this->record->prices->each->delete();
+                    }
+
+                    $this->record->delete();
+
+                    return redirect(SukuCadangResource::getUrl());
+                }),
             Actions\EditAction::make(),
         ];
     }
@@ -29,17 +38,17 @@ class ViewSukuCadang extends ViewRecord
                         Infolists\Components\Grid::make()
                             ->schema([
                                 Infolists\Components\TextEntry::make('code')
-                                ->label('Kode Suku Cadang'),
-                            Infolists\Components\TextEntry::make('name')
-                                ->label('Nama Suku Cadang'),
-                            Infolists\Components\TextEntry::make('brand.name')
-                                ->label('Merk'),
-                            Infolists\Components\TextEntry::make('stock')
-                                ->label('Stok'),
-                            Infolists\Components\TextEntry::make('current_price')
-                                ->label('Harga'),
-                            Infolists\Components\TextEntry::make('description')
-                                ->label('Deskripsi'),
+                                    ->label('Kode Suku Cadang'),
+                                Infolists\Components\TextEntry::make('name')
+                                    ->label('Nama Suku Cadang'),
+                                Infolists\Components\TextEntry::make('brand.name')
+                                    ->label('Merk'),
+                                Infolists\Components\TextEntry::make('stock')
+                                    ->label('Stok'),
+                                Infolists\Components\TextEntry::make('current_price')
+                                    ->label('Harga'),
+                                Infolists\Components\TextEntry::make('description')
+                                    ->label('Deskripsi'),
                             ]),
                     ]),
             ]);

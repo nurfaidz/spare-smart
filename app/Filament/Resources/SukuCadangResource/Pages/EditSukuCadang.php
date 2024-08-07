@@ -15,7 +15,16 @@ class EditSukuCadang extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->action(function () {
+                    if ($this->record->prices->count() > 0) {
+                        $this->record->prices->each->delete();
+                    }
+
+                    $this->record->delete();
+
+                    return redirect(SukuCadangResource::getUrl());
+                })
         ];
     }
 
