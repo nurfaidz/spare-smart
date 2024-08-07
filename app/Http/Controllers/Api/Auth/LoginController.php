@@ -10,28 +10,18 @@ class LoginController extends Controller
 {
     public function __invoke(Request $request)
     {
-        if ($request->has('email')) {
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
-        } else {
-            $request->validate([
-                'username' => 'required',
-                'password' => 'required',
-            ]);
-        }
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
         $password = $request->get('password');
 
-        $user = $request->has('email')
-            ? \App\Models\User::where('email', $request->get('email'))->first()
-            : \App\Models\User::where('username', $request->get('username'))->first();
+        $user = \App\Models\User::where('email', $request->get('email'))->first();
 
         if ($user == null || !Hash::check($password, $user->password)) {
             return response()->apiError(422, 'Kredensial yang Anda masukkan salah.', [
                 'email' => ['Kredensial yang Anda masukkan salah.'],
-                'username' => ['Kredensial yang Anda masukkan salah.'],
             ]);
         }
 
