@@ -95,6 +95,7 @@ class BarangMasukResource extends Resource
             ->filters([
                 //
             ])
+            ->defaultSort('incoming_at', 'desc')
             ->actions([
                 Tables\Actions\ViewAction::make(),
             ])

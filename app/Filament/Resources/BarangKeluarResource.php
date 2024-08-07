@@ -95,6 +95,7 @@ class BarangKeluarResource extends Resource
             ->filters([
                 //
             ])
+            ->defaultSort('outgoing_at', 'desc')
             ->actions([
                 Tables\Actions\ViewAction::make(),
             ])
