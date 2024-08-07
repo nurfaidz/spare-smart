@@ -28,7 +28,7 @@ class LoginController extends Controller
             ? \App\Models\User::where('email', $request->get('email'))->first()
             : \App\Models\User::where('username', $request->get('username'))->first();
 
-        if ($user == null || Hash::check($password, $user->password)) {
+        if ($user == null || !Hash::check($password, $user->password)) {
             return response()->apiError(422, 'Kredensial yang Anda masukkan salah.', [
                 'email' => ['Kredensial yang Anda masukkan salah.'],
                 'username' => ['Kredensial yang Anda masukkan salah.'],
