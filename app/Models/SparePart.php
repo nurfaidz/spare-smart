@@ -18,6 +18,16 @@ class SparePart extends Model
         return $this->belongsTo(Brand::class)->withTrashed();
     }
 
+    public function incomingItems()
+    {
+        return $this->hasMany(IncomingItem::class, 'spare_part_id');
+    }
+
+    public function outgoingItems()
+    {
+        return $this->hasMany(OutgoingItem::class, 'spare_part_id');
+    }
+
     public function logs()
     {
         return $this->morphMany(Activity::class, 'subject');

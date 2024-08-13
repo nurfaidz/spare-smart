@@ -5,6 +5,7 @@ namespace App\Filament\Resources\BrandResource\Pages;
 use App\Filament\Resources\BrandResource;
 use Filament\Actions;
 use Filament\Facades\Filament;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +16,29 @@ class EditBrand extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->action(function () {
+
+                    if ($this->record->spareParts->count() > 0) {
+                        Notification::make()
+                            ->title('Gagal menghapus data')
+                            ->body('Brand ini masih memiliki data suku cadang yang terkait.')
+                            ->danger()
+                            ->send();
+
+                        return;
+                    }
+
+                    $this->record->delete();
+
+                    Notification::make()
+                        ->title('Berhasil menghapus data')
+                        ->body('Data brand berhasil dihapus.')
+                        ->success()
+                        ->send();
+
+                    return redirect()->route('filament.admin.resources.brands.index');
+                })
         ];
     }
 

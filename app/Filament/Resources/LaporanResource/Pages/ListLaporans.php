@@ -20,6 +20,7 @@ class ListLaporans extends ListRecords
         return [
             Actions\Action::make('export')
                 ->label('Ekspor Laporan')
+                ->modalHeading('Ekspor data hanya untuk laporan yang aktif.')
                 ->form([
                     Forms\Components\Select::make('reportable_type')
                         ->label('Tipe Laporan')

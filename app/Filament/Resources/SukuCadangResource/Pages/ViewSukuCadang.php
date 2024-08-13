@@ -15,16 +15,6 @@ class ViewSukuCadang extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make()
-                ->action(function () {
-                    if ($this->record->prices->count() > 0) {
-                        $this->record->prices->each->delete();
-                    }
-
-                    $this->record->delete();
-
-                    return redirect(SukuCadangResource::getUrl());
-                }),
             Actions\EditAction::make(),
         ];
     }

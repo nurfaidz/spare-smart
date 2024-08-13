@@ -48,6 +48,7 @@ class SukuCadangResource extends Resource
                                 ->required(),
                             Forms\Components\TextInput::make('current_price')
                                 ->label('Harga')
+                                ->minValue(0)
                                 ->numeric()
                                 ->required(),
                             Forms\Components\TextArea::make('description')

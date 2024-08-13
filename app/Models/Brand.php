@@ -17,4 +17,9 @@ class Brand extends Model
     {
         return $this->morphMany(Activity::class, 'subject');
     }
+
+    public function spareParts()
+    {
+        return $this->hasMany(SparePart::class, 'brand_id');
+    }
 }

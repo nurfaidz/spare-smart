@@ -48,6 +48,7 @@ class BarangKeluarResource extends Resource
                                 ->preload(),
                             Forms\Components\TextInput::make('quantity')
                                 ->label('Jumlah')
+                                ->minValue(1)
                                 ->numeric()
                                 ->required(),
                             Forms\Components\DatePicker::make('outgoing_at')

@@ -40,14 +40,18 @@ class BarangMasukResource extends Resource
                             Forms\Components\Select::make('spare_part_id')
                                 ->label('Suku Cadang')
                                 ->options(function (?Model $record) {
-
-                                    return \App\Models\SparePart::pluck('name', 'id');
+                                    return \App\Models\SparePart::all()->mapWithKeys(function ($sparePart) {
+                                        return [
+                                            $sparePart->id => $sparePart->name . ' - ' . $sparePart->code,
+                                        ];
+                                    })->toArray();
                                 })
                                 ->required()
                                 ->searchable()
                                 ->preload(),
                             Forms\Components\TextInput::make('quantity')
                                 ->label('Jumlah')
+                                ->minValue(1)
                                 ->numeric()
                                 ->required(),
                             Forms\Components\DatePicker::make('incoming_at')

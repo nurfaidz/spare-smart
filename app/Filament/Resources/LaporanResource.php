@@ -77,9 +77,11 @@ class LaporanResource extends Resource
                     ->label('Tanggal')
                     ->formatStateUsing(function ($record) {
                         if ($record->reportable_type === \App\Models\IncomingItem::class) {
-                            return Carbon::parse($record->reportable->incoming_at)->locale('id_ID')->isoFormat('LL');
+                            // return Carbon::parse($record->reportable->incoming_at)->locale('id_ID')->isoFormat('LL');
+                            return $record->reportable ? Carbon::parse($record->reportable->incoming_at)->locale('id_ID')->isoFormat('LL') : '-';
                         } elseif ($record->reportable_type === \App\Models\OutgoingItem::class) {
-                            return Carbon::parse($record->reportable->outgoing_at)->locale('id_ID')->isoFormat('LL');
+                            // return Carbon::parse($record->reportable->outgoing_at)->locale('id_ID')->isoFormat('LL');
+                            return $record->reportable ? Carbon::parse($record->reportable->outgoing_at)->locale('id_ID')->isoFormat('LL') : '-';
                         }
                     }),
                 Tables\Columns\TextColumn::make('reportable.status')
