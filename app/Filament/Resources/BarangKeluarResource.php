@@ -34,31 +34,45 @@ class BarangKeluarResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('Informasi Barang Keluar')
-                ->schema([
-                    Forms\Components\Grid::make()
-                        ->schema([
-                            Forms\Components\Select::make('spare_part_id')
-                                ->label('Suku Cadang')
-                                ->options(function (?Model $record) {
+                    ->schema([
+                        Forms\Components\Grid::make()
+                            ->schema([
+                                Forms\Components\Select::make('spare_part_id')
+                                    ->label('Suku Cadang')
+                                    ->options(function (?Model $record) {
 
-                                    return \App\Models\SparePart::where('stock', '>', 0)->pluck('name', 'id');
-                                })
-                                ->required()
-                                ->searchable()
-                                ->preload(),
-                            Forms\Components\TextInput::make('quantity')
-                                ->label('Jumlah')
-                                ->minValue(1)
-                                ->numeric()
-                                ->required(),
-                            Forms\Components\DatePicker::make('outgoing_at')
-                                ->label('Tanggal Keluar')
-                                ->native(false)
-                                ->maxDate(now())
-                                ->required(),
-                            Forms\Components\Textarea::make('note')
-                                ->label('Catatan'),
-                        ]),
+                                        return \App\Models\SparePart::where('stock', '>', 0)->get()->mapWithKeys(function ($sparePart) {
+                                            return [
+                                                $sparePart->id => $sparePart->name . ' - ' . $sparePart->code,
+                                            ];
+                                        })->toArray();
+                                    })
+                                    ->required()
+                                    ->searchable()
+                                    ->preload(),
+                                Forms\Components\TextInput::make('quantity')
+                                    ->label('Jumlah')
+                                    ->minValue(1)
+                                    ->rules([
+                                        function (callable $get) {
+                                            return function (string $attribute, $value, $fail) use ($get) {
+                                                $sparePart = \App\Models\SparePart::find($get('spare_part_id'));
+                                                if ($value > $sparePart->stock) {
+                                                    $fail('Stok tidak mencukupi.');
+                                                }
+                                            };
+                                        },
+                                    ])
+                                    ->numeric()
+                                    ->required(),
+                                Forms\Components\DatePicker::make('outgoing_at')
+                                    ->label('Tanggal Keluar')
+                                    ->native(false)
+                                    ->maxDate(now())
+                                    ->required(),
+                                Forms\Components\Textarea::make('note')
+                                    ->label('Catatan'),
+                            ]),
                     ]),
             ]);
     }
@@ -67,28 +81,31 @@ class BarangKeluarResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('sparePart.code')
+                    ->label('Kode Suku Cadang')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('sparePart.name')
-                ->label('Suku Cadang')
-                ->searchable(),
+                    ->label('Suku Cadang')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('sparePart.current_price')
                     ->label('Harga Satuan')
-                    ->formatStateUsing(fn ($record) => $record->sparePart->current_price ? 'Rp ' . number_format($record->sparePart->current_price, 0, ',', '.') : '-')
+                    ->formatStateUsing(fn($record) => $record->sparePart->current_price ? 'Rp ' . number_format($record->sparePart->current_price, 0, ',', '.') : '-')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('quantity')
                     ->label('Jumlah')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('total_price')
                     ->label('Total Harga')
-                    ->formatStateUsing(fn ($record) => $record->total_price ? 'Rp ' . number_format($record->total_price, 0, ',', '.') : '-')
+                    ->formatStateUsing(fn($record) => $record->total_price ? 'Rp ' . number_format($record->total_price, 0, ',', '.') : '-')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('outgoing_at')
                     ->label('Tanggal Keluar')
-                    ->formatStateUsing(fn ($record) => Carbon::parse($record->outgoing_at)->locale('id_ID')->isoFormat('LL'))
+                    ->formatStateUsing(fn($record) => Carbon::parse($record->outgoing_at)->locale('id_ID')->isoFormat('LL'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         Activated::$name => 'success',
                         Cancelled::$name => 'danger',
                     })
