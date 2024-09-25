@@ -36,21 +36,23 @@ class ListLaporans extends ListRecords
                         ->required()
                         ->startDate(Carbon::now()->startOfMonth())
                         ->endDate(Carbon::now())
-                        ->displayFormat('YYYY-MM-DD')
-                        ->format('Y-m-d'),
+                        ->displayFormat('DD/MM/YYYY')
+                        ->format('d/m/Y')
                 ])
                 ->action(function (array $data) {
                     $date = explode(' - ', $data['date']);
+                    $startDate = Carbon::createFromFormat('d/m/Y', trim($date[0]));
+                    $endDate = Carbon::createFromFormat('d/m/Y', trim($date[1]));
 
                     $tableFilters = [];
                     if ($data['reportable_type'] === \App\Models\IncomingItem::class) {
-                        $tableFilters = \App\Models\IncomingItem::where('incoming_at', '>=', Carbon::parse($date[0]))
-                            ->where('incoming_at', '<=', Carbon::parse($date[1]))
+                        $tableFilters = \App\Models\IncomingItem::where('incoming_at', '>=', $startDate)
+                            ->where('incoming_at', '<=', $endDate)
                             ->whereState('status', \App\States\Status\Activated::class)
                             ->get();
                     } elseif ($data['reportable_type'] === \App\Models\OutgoingItem::class) {
-                        $tableFilters = \App\Models\OutgoingItem::where('outgoing_at', '>=', Carbon::parse($date[0]))
-                            ->where('outgoing_at', '<=', Carbon::parse($date[1]))
+                        $tableFilters = \App\Models\OutgoingItem::where('outgoing_at', '>=', $startDate)
+                            ->where('outgoing_at', '<=', $endDate)
                             ->whereState('status', \App\States\Status\Activated::class)
                             ->get();
                     }
@@ -62,9 +64,9 @@ class ListLaporans extends ListRecords
                             ->danger()
                             ->send();
                     } else {
-                        $export = new \App\Exports\ReportExport($tableFilters, $data['reportable_type'], $date[0], $date[1]);
+                        $export = new \App\Exports\ReportExport($tableFilters, $data['reportable_type'], $startDate, $endDate);
                         $name = $data['reportable_type'] === \App\Models\IncomingItem::class ? 'barang_masuk' : 'barang_keluar';
-                        return \Maatwebsite\Excel\Facades\Excel::download($export, 'laporan_' . $name . '_' . Carbon::parse($date[0])->format('Y-m-d') . '_' . Carbon::parse($date[1])->format('Y-m-d') . '.xlsx');
+                        return \Maatwebsite\Excel\Facades\Excel::download($export, 'laporan_' . $name . '_' . $startDate->format('Y-m-d') . '_' . $endDate->format('Y-m-d') . '.xlsx');
                     }
 
                 })
