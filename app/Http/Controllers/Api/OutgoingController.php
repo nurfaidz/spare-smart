@@ -40,7 +40,12 @@ class OutgoingController extends Controller
     public function store(OutgoingItemRequest $request)
     {
         try {
-            // $outgoingItem = OutgoingItem::create($request->validated());
+            $request->validate([
+                'spare_part_id' => 'required',
+                'quantity' => 'required|integer|min:1',
+                'outgoing_at' => 'required',
+                'note' => 'nullable|string',
+            ]);
 
             $sparePart = \App\Models\SparePart::find($request->spare_part_id);
             $sparePart->stock -= $request->quantity;
@@ -62,20 +67,20 @@ class OutgoingController extends Controller
                 'reportable_type' => get_class($outgoingItem),
             ]);
 
-            // activity()
-            //     ->performedOn($report)
-            //     ->causedBy(auth()->user())
-            //     ->log('Membuat laporan barang keluar');
+             activity()
+                 ->performedOn($report)
+                 ->causedBy(auth()->user())
+                 ->log('Membuat laporan barang keluar dari aplikasi');
 
-            // activity()
-            //     ->performedOn($sparePart)
-            //     ->causedBy(auth()->user())
-            //     ->log('Mengupdate stok suku cadang dari barang keluar');
+             activity()
+                 ->performedOn($sparePart)
+                 ->causedBy(auth()->user())
+                 ->log('Mengupdate stok suku cadang dari barang keluar dari aplikasi');
 
-            //     activity()
-            //     ->performedOn($outgoingItem)
-            //     ->causedBy(auth()->user())
-            //     ->log('Membuat data barang keluar');
+                 activity()
+                 ->performedOn($outgoingItem)
+                 ->causedBy(auth()->user())
+                 ->log('Membuat data barang keluar dari aplikasi');
 
             return response()->apiSuccess(new OutgoingItemJsonResource($outgoingItem));
         } catch (\Throwable $th) {

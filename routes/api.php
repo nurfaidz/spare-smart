@@ -32,7 +32,7 @@ Route::middleware([])->name('api.')->group(function () {
             Route::get('show/{incoming_item}', [Api\IncomingController::class, 'show'])->name('show');
         });
 
-        Route::prefix('outgoing-item')->name('outgoing-items.')->group(function () {
+        Route::prefix('outgoing-item')->name('outgoing-item.')->group(function () {
             Route::get('/', [Api\OutgoingController::class, 'index'])->name('index');
             Route::post('store', [Api\OutgoingController::class, 'store'])->name('store');
             Route::get('create', [Api\OutgoingController::class, 'create'])->name('create');

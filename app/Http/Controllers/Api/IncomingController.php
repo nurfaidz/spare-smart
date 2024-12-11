@@ -62,21 +62,21 @@ class IncomingController extends Controller
                 'reportable_type' => get_class($incomingItem),
             ]);
 
-            // activity()
-            //     ->performedOn($report)
-            //     ->causedBy(auth()->user())
-            //     ->log('Membuat laporan barang masuk');
+             activity()
+                 ->performedOn($report)
+                 ->causedBy(auth()->user())
+                 ->log('Membuat laporan barang masuk dari aplikasi');
 
-            // activity()
-            //     ->performedOn($sparePart)
-            //     ->causedBy(auth()->user())
-            //     ->log('Mengupdate stok suku cadang dari barang masuk');
+             activity()
+                 ->performedOn($sparePart)
+                 ->causedBy(auth()->user())
+                 ->log('Mengupdate stok suku cadang dari barang masuk dari aplikasi');
 
 
-            // activity()
-            //     ->performedOn($incomingItem)
-            //     ->causedBy(auth()->user())
-            //     ->log('Membuat data barang masuk');
+             activity()
+                 ->performedOn($incomingItem)
+                 ->causedBy(auth()->user())
+                 ->log('Membuat data barang masuk dari aplikasi');
 
             return response()->apiSuccess(new IncomingItemJsonResource($incomingItem));
         } catch (\Throwable $th) {
