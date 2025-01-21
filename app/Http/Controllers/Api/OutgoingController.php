@@ -48,6 +48,11 @@ class OutgoingController extends Controller
             ]);
 
             $sparePart = \App\Models\SparePart::find($request->spare_part_id);
+
+            if ($sparePart->stock < $request->quantity) {
+                return response()->apiError(422, 'Stok suku cadang tidak mencukupi.', new UnprocessableEntityHttpException('Stok suku cadang tidak mencukupi.', null, 422));
+            }
+
             $sparePart->stock -= $request->quantity;
             $sparePart->save();
 

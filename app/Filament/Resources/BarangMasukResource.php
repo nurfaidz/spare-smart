@@ -53,6 +53,17 @@ class BarangMasukResource extends Resource
                                     ->label('Jumlah')
                                     ->minValue(1)
                                     ->numeric()
+                                    ->rules([
+                                        function (callable $get) {
+                                            return function (string $attribute, $value, callable $fail) use ($get) {
+                                                // if quantity any '-' example -1, then fail
+
+                                                if ($value < 1) {
+                                                    $fail('Jumlah tidak boleh kurang dari 1.');
+                                                }
+                                            };
+                                        }
+                                    ])
                                     ->required(),
                                 Forms\Components\DatePicker::make('incoming_at')
                                     ->label('Tanggal Masuk')

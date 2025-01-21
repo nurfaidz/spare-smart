@@ -60,6 +60,10 @@ class BarangKeluarResource extends Resource
                                                 if ($value > $sparePart->stock) {
                                                     $fail('Stok tidak mencukupi.');
                                                 }
+
+                                                if ($value < 1) {
+                                                    $fail('Jumlah tidak boleh kurang dari 1.');
+                                                }
                                             };
                                         },
                                     ])
